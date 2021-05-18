@@ -1,3 +1,2 @@
-export * from "./avatar";
-export * from "./sharp";
-export * from "./interfaces";
+export * from './Avatar';
+export * from './interfaces';
