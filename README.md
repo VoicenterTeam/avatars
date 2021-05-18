@@ -17,7 +17,7 @@ where`config` is a config object
 }
 ```
 
-If `config = {}`, then the class instance will be created with default config:
+Example:
 ```js
 {
   avatarsPath: "./src/media",
@@ -53,7 +53,7 @@ avatar.upload({
   AvatarAccountID: 21,
   AvatarID: 3,
   AvatarData: {
-    Coordinates: { width: 300, height: 300, left: 60, top: 60 },
+    Coordinates: { width: 100, height: 100, left: 20, top: 20 },
     File: "data:image/jpeg;base64,/9j/4AAAABBGQ...",
   },
 });
@@ -62,9 +62,9 @@ avatar.upload({
 
 
 
-### Avatar.generate
+### Avatar.generateFromTemplate
 ----
-  Generates the avatar images to the server in sizes `168x168`, `32x32` and `24x24` (can be changed in config) using the template and color given in the request body.
+  Generates the avatar images from present template to the server in sizes `168x168`, `32x32` and `24x24` (can be changed in config) using the template and color given in the request body.
 
 The images are saved as `src/media/<AvatarAccountID>/<AccountID>/<size>.png`
 
@@ -82,9 +82,36 @@ The images are saved as `src/media/<AvatarAccountID>/<AccountID>/<size>.png`
 * **Example:**
 
 ```js
-avatar.generate({
+avatar.generateFromTemplate({
   AvatarAccountID: 21,
   AvatarID: 2,
   AvatarData: { TemplateID: 1, Hex: "#640a82" },
+});
+```
+
+### Avatar.generateFromContent
+----
+Generates the avatar images with given text to the server in sizes `168x168`, `32x32` and `24x24` (can be changed in config) using the template and color given in the request body.
+
+The images are saved as `src/media/<AvatarAccountID>/<AccountID>/<size>.png`
+
+* **Arguments**
+
+* `inputBody` [object] [required]:
+  * `AvatarAccountID` [integer] [required]: ID of the Account.
+  * `AvatarID` [integer] [required]: ID of the Avatar.
+  * `AvatarData` [object] [required]:
+    * `Hex` [string] [required]: hex color of the background
+    * `Content` [string] [required]: Text to be placed on the image
+
+
+
+* **Example:**
+
+```js
+avatar.generateFromContent({
+  AvatarAccountID: 21,
+  AvatarID: 4,
+  AvatarData: { Content: "SZ", Hex: "#640a82" },
 });
 ```
