@@ -2,11 +2,9 @@
   "name": "avatar-api",
   "version": "1.0.0",
   "description": "Avatar Api",
-  "main": "dist/app.js",
+  "main": "dist/index.js",
   "scripts": {
-    "build": "tsc --build",
-    "start": "tsc && node dist/app.js",
-    "serve": "tsc && nodemon dist/app.js"
+    "build": "tsc --build"
   },
   "dependencies": {
     "@pm2/io": "^4.3.5",
