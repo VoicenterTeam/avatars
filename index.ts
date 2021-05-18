@@ -8,7 +8,7 @@ import {
   generateAvatarsFromTemplate
 } from "./lib";
 
-export class Avatar {
+class Avatar {
   config: Config;
 
   constructor(config) {
@@ -66,3 +66,5 @@ export class Avatar {
     });
   }
 }
+
+export default Avatar;
