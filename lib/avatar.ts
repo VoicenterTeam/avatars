@@ -1,63 +1,24 @@
-import fs from "fs";
-import * as defaultConfig from "config";
-import { AvatarGenerateInput, AvatarUploadInput, Config } from "./interfaces";
-import { cropAndSaveAvatars, generateAvatarsFromTemplate } from "./services";
+import * as config from "config";
+import { CropCoordinates } from "./interfaces";
+import { colorAndResizeImage, cropAndResizeBinaryImage } from "./sharp";
 
-export class Avatar {
-  config: Config;
+export const generateAvatarsFromTemplate = (templateId: number, hexColor: string, outDirectory: string) => {
+  const templatePath = `${config.templatesPath}/${templateId}.png`;
 
-  constructor(config) {
-    if (config.avatarsPath && config.templatesPath && config.sizes) {
-      this.config = config;
-    } else {
-      this.config = defaultConfig;
-    }
-  }
+  config.sizes.forEach(size => {
+    const outAvatarPath = `${outDirectory}/${size}.png`;
 
-  generate(inputBody: AvatarGenerateInput) {
-    const { AvatarAccountID, AvatarID, AvatarData } = inputBody;
+    colorAndResizeImage(templatePath, outAvatarPath, hexColor, size);
+  });
+}
 
-    if (!AvatarAccountID || !AvatarID || !AvatarData || !AvatarData.TemplateID || !AvatarData.Hex) {
-      console.log("Wrong request object");
+export const cropAndSaveAvatars = (binaryImageData: string, coordinates: CropCoordinates, outDirectory: string) => {
+  const base64Image = binaryImageData.split(';base64,').pop();
+  const imageBuffer = Buffer.from(base64Image, 'base64');
 
-      return;
-    }
+  config.sizes.forEach(size => {
+    const outAvatarPath = `${outDirectory}/${size}.png`;
 
-    const outAvatarsDirectory = `${this.config.avatarsPath}/${AvatarAccountID}/${AvatarID}`;
-
-    fs.mkdir(outAvatarsDirectory, { recursive: true }, (error) => {
-      generateAvatarsFromTemplate(AvatarData.TemplateID, AvatarData.Hex, outAvatarsDirectory);
-
-      if (error) {
-        throw error;
-      }
-    });
-  }
-
-  upload(inputBody: AvatarUploadInput) {
-    const { AvatarAccountID, AvatarData, AvatarID } = inputBody;
-
-    if (!AvatarAccountID || !AvatarID || !AvatarData || !AvatarData.Coordinates || !AvatarData.File) {
-      console.log("Wrong request object");
-
-      return;
-    }
-
-    const { width, height, left, top } = AvatarData.Coordinates
-    if (!width || !height || !left || !top) {
-      console.log("Wrong coordinates object");
-
-      return;
-    }
-
-    const outAvatarDirectory = `${this.config.avatarsPath}/${AvatarAccountID}/${AvatarID}`;
-
-    fs.mkdir(outAvatarDirectory, {recursive: true}, (error) => {
-      cropAndSaveAvatars(AvatarData.File, AvatarData.Coordinates, outAvatarDirectory);
-
-      if (error) {
-        throw error;
-      }
-    });
-  }
+    cropAndResizeBinaryImage(imageBuffer, outAvatarPath, coordinates, size);
+  });
 }

@@ -1,5 +1,5 @@
 import sharp from "sharp";
-import { CropCoordinates } from "../interfaces";
+import { CropCoordinates } from "./interfaces";
 
 export const colorAndResizeImage = (inImagePath: string, outImagePath: string, hexColor: string, size: number) => {
   sharp(inImagePath)
