@@ -29,7 +29,7 @@ export class Avatar {
       generateAvatarsFromTemplate(AvatarData.TemplateID, AvatarData.Hex, outAvatarsDirectory);
 
       if (error) {
-        console.log(error);
+        throw error;
       }
     });
   }
@@ -56,7 +56,7 @@ export class Avatar {
       cropAndSaveAvatars(AvatarData.File, AvatarData.Coordinates, outAvatarDirectory);
 
       if (error) {
-        console.log(error);
+        throw error;
       }
     });
   }
