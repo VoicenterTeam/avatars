@@ -1,7 +1,12 @@
 import fs from "fs";
 import * as defaultConfig from "config";
-import { AvatarGenerateInput, AvatarUploadInput, Config } from "./lib/interfaces";
-import { cropAndSaveAvatars, generateAvatarsFromTemplate } from "./lib";
+import {
+  AvatarGenerateInput,
+  AvatarUploadInput,
+  Config,
+  cropAndSaveAvatars,
+  generateAvatarsFromTemplate
+} from "./lib";
 
 export class Avatar {
   config: Config;
