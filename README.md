@@ -1,8 +1,21 @@
 # Avatar Libarry
-A library for uploading and generating avatars
+A library for uploading and generating avatars.
 
+## How to install
+```bash
+npm install @voicenter/avatars;
+```
+
+Importing using ES6 modules:
+```js
+import { Avatar } from "@voicenter/avatars";
+```
+
+Importing using CommonJS:
+```js
+const { Avatar } = require("@voicenter/avatars");
+```
 ## How to use
-
 Create an instance of the `Avatar` class
 ```js
 const avatar = new Avatar(config);
@@ -64,7 +77,7 @@ avatar.upload({
 
 ### Avatar.generateFromTemplate
 ----
-  Generates the avatar images from present template to the server in sizes `168x168`, `32x32` and `24x24` (can be changed in config) using the template and color given in the request body.
+  Generates the avatar image from present template and saves it in sizes `168x168`, `32x32` and `24x24` (can be changed in config) using the template and color given in the request body.
 
 The images are saved as `src/media/<AvatarAccountID>/<AccountID>/<size>.png`
 
@@ -91,7 +104,7 @@ avatar.generateFromTemplate({
 
 ### Avatar.generateFromContent
 ----
-Generates the avatar images with given text to the server in sizes `168x168`, `32x32` and `24x24` (can be changed in config) using the template and color given in the request body.
+Generates the avatar image with given text and saves it in sizes `168x168`, `32x32` and `24x24` (can be changed in config) using the template and color given in the request body.
 
 The images are saved as `src/media/<AvatarAccountID>/<AccountID>/<size>.png`
 
