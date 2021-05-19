@@ -1,11 +1,17 @@
 {
-  "name": "avatar-api",
+  "name": "@voicenter/avatars",
   "version": "1.0.0",
-  "description": "Avatar Api",
+  "description": "Avatars",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/",
+    "src/"
+  ],
   "scripts": {
     "build": "tsc --build",
-    "start": "tsc && node dist/index.js"
+    "start": "tsc && node dist/index.js",
+    "prepublish": "npm run build"
   },
   "dependencies": {
     "@pm2/io": "^4.3.5",
@@ -37,5 +43,8 @@
     ],
     "exec": "npm start",
     "ext": "ts"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
