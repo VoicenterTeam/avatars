@@ -5,8 +5,8 @@ export default {
     other: "Montserrat",
   },
   fontFile: {
-    hebrew: "src/fonts/Open_Sans/OpenSans-SemiBold.ttf",
-    other: "src/fonts/Montserrat/Montserrat-SemiBold.ttf",
+    hebrew: `${ __dirname }../../../src/fonts/Open_Sans/OpenSans-SemiBold.ttf`,
+    other: `${ __dirname }../../../src/fonts/Montserrat/Montserrat-SemiBold.ttf`,
   },
   fontSizeRatio: 2,
 };
