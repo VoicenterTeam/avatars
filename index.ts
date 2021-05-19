@@ -1,3 +1,3 @@
-import { Avatar } from "./lib";
+import { Avatar } from "./lib/Avatar";
 
-export default Avatar;
+export { Avatar };

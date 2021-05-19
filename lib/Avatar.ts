@@ -1,4 +1,4 @@
-import fs from "fs";
+import { mkdir, writeFileSync } from "fs";
 import sharp from "sharp";
 import { registerFont, createCanvas } from 'canvas';
 import defaultFontOptions from "../config/fonts";
@@ -36,7 +36,7 @@ export class Avatar {
     }
     const savedAvatarsDirectory = `${this.config.avatarsPath}/${AvatarAccountID}/${AvatarID}`;
 
-    fs.mkdir(savedAvatarsDirectory, {recursive: true}, (error) => {
+    mkdir(savedAvatarsDirectory, {recursive: true}, (error) => {
       if (error) {
         throw error;
       }
@@ -60,7 +60,7 @@ export class Avatar {
 
     const savedAvatarsDirectory = `${this.config.avatarsPath}/${AvatarAccountID}/${AvatarID}`;
 
-    fs.mkdir(savedAvatarsDirectory, {recursive: true}, (error) => {
+    mkdir(savedAvatarsDirectory, {recursive: true}, (error) => {
       if (error) {
         throw error;
       }
@@ -94,7 +94,7 @@ export class Avatar {
 
     const savedAvatarDirectory = `${this.config.avatarsPath}/${AvatarAccountID}/${AvatarID}`;
 
-    fs.mkdir(savedAvatarDirectory, {recursive: true}, (error) => {
+    mkdir(savedAvatarDirectory, {recursive: true}, (error) => {
       if (error) {
         throw error;
       }
@@ -128,7 +128,7 @@ export class Avatar {
     context.fillText(text, size/2, size/2);
 
     const buffer = canvas.toBuffer('image/png');
-    fs.writeFileSync(outImagePath, buffer);
+    writeFileSync(outImagePath, buffer);
   }
 
   private static checkTextContainsHebrew (text) {
