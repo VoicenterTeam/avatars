@@ -16,7 +16,7 @@ export class Avatar {
 
   constructor(config) {
     if (!config.avatarsPath && !config.templatesPath && !config.sizes) {
-      throw new Error('Config not provided');
+      throw new Error("Config not provided");
     }
 
     this.config = config;
@@ -30,9 +30,7 @@ export class Avatar {
     const { AvatarAccountID, AvatarID, AvatarData } = inputBody;
 
     if (!AvatarAccountID || !AvatarID || !AvatarData || !AvatarData.Content || !AvatarData.Hex) {
-      console.log("Wrong request object");
-
-      return;
+      throw new Error("Wrong input object");
     }
     const savedAvatarsDirectory = `${this.config.avatarsPath}/${AvatarAccountID}/${AvatarID}`;
 
@@ -53,9 +51,7 @@ export class Avatar {
     const {AvatarAccountID, AvatarID, AvatarData} = inputBody;
 
     if (!AvatarAccountID || !AvatarID || !AvatarData || !AvatarData.TemplateID || !AvatarData.Hex) {
-      console.log("Wrong request object");
-
-      return;
+      throw new Error("Wrong input object");
     }
 
     const savedAvatarsDirectory = `${this.config.avatarsPath}/${AvatarAccountID}/${AvatarID}`;
@@ -80,16 +76,12 @@ export class Avatar {
     const {AvatarAccountID, AvatarData, AvatarID} = inputBody;
 
     if (!AvatarAccountID || !AvatarID || !AvatarData || !AvatarData.Coordinates || !AvatarData.File) {
-      console.log("Wrong request object");
-
-      return;
+      throw new Error("Wrong input object");
     }
 
     const {width, height, left, top} = AvatarData.Coordinates;
     if (!width || !height || !left || !top) {
-      console.log("Wrong coordinates object");
-
-      return;
+      throw new Error("Wrong coordinates object");
     }
 
     const savedAvatarDirectory = `${this.config.avatarsPath}/${AvatarAccountID}/${AvatarID}`;
