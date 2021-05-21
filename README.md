@@ -1,4 +1,4 @@
-# Avatar Libarry
+# Avatar Library
 A library for uploading and generating avatars.
 
 ## How to install
@@ -26,7 +26,7 @@ where`config` is a config object
 {
   avatarsPath: string; // path to folder with saved avatars
   templatesPath: string; // path to folder with templates
-  sizes: Array<number>; // sizes of images to save
+  sizes?: Array<number>; // sizes of images to save [optional]
 }
 ```
 
@@ -34,8 +34,15 @@ Example:
 ```js
 {
   avatarsPath: "./src/media",
-  templatesPath: "./src/templates", 
-  sizes: [168, 32, 24]
+  templatesPath: "./src/templates"
+}
+```
+To generate images of custom sizes, add `sizes` to the config. Default sizes are `168, 32, 24`
+```js
+{
+  avatarsPath: "./src/media",
+  templatesPath: "./src/templates",
+  sizes: [300, 200, 100]        
 }
 ```
 
@@ -43,7 +50,7 @@ Example:
 
 ### Avatar.upload
 ----
-  Uploads the avatar images to the server in sizes `168x168`, `32x32` and `24x24` (can be changed in config).
+  Uploads the avatar image in sizes provided in config or default sizes (`168x168`, `32x32` and `24x24`).
 
 The images are saved as `src/media/<AvatarAccountID>/<AccountID>/<size>.png`
 
@@ -77,7 +84,7 @@ avatar.upload({
 
 ### Avatar.generateFromTemplate
 ----
-  Generates the avatar image from present template and saves it in sizes `168x168`, `32x32` and `24x24` (can be changed in config) using the template and color given in the request body.
+  Generates the avatar image from present template and saves it in sizes provided in config or default sizes (`168x168`, `32x32` and `24x24`) using the template and background color given in the input object.
 
 The images are saved as `src/media/<AvatarAccountID>/<AccountID>/<size>.png`
 
@@ -104,7 +111,7 @@ avatar.generateFromTemplate({
 
 ### Avatar.generateFromContent
 ----
-Generates the avatar image with given text and saves it in sizes `168x168`, `32x32` and `24x24` (can be changed in config) using the template and color given in the request body.
+Generates the avatar image with given text and saves it in sizes provided in config or default sizes (`168x168`, `32x32` and `24x24`) using the background color given in the input object.
 
 The images are saved as `src/media/<AvatarAccountID>/<AccountID>/<size>.png`
 
