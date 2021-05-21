@@ -2,6 +2,7 @@ import { mkdir, writeFileSync } from "fs";
 import sharp from "sharp";
 import { registerFont, createCanvas } from 'canvas';
 import defaultFontOptions from "../config/fonts";
+import defaultImageSizes from "../config/imageSizes";
 import {
   AvatarGenerateFromContentInput,
   AvatarGenerateFromTemplateInput,
@@ -13,15 +14,22 @@ import {
 export class Avatar {
   config: Config;
   fontOptions: FontOptions;
+  imageSizes: Array<number>
 
   constructor(config) {
-    if (!config.avatarsPath && !config.templatesPath && !config.sizes) {
+    if (!config.avatarsPath && !config.templatesPath) {
       throw new Error("Config not provided");
     }
 
-    this.config = config;
-    this.fontOptions = defaultFontOptions;
+    if (config.sizes && config.sizes.length > 0) {
+      this.imageSizes = config.sizes;
+    } else {
+      this.imageSizes = defaultImageSizes;
+    }
 
+    this.config = config;
+
+    this.fontOptions = defaultFontOptions;
     registerFont(defaultFontOptions.fontFile.other, { family: defaultFontOptions.fontFamily.other });
     registerFont(defaultFontOptions.fontFile.hebrew, { family: defaultFontOptions.fontFamily.hebrew });
   }
@@ -39,7 +47,7 @@ export class Avatar {
         throw error;
       }
 
-      this.config.sizes.forEach(size => {
+      this.imageSizes.forEach(size => {
         const savedAvatarPath = `${savedAvatarsDirectory}/${size}.png`;
 
         this.createCanvasImage(AvatarData.Content, size, AvatarData.Hex, savedAvatarPath);
@@ -63,7 +71,7 @@ export class Avatar {
 
       const templatePath = `${this.config.templatesPath}/${AvatarData.TemplateID}.png`;
 
-      this.config.sizes.forEach(size => {
+      this.imageSizes.forEach(size => {
         sharp(templatePath)
           .resize(size, size)
           .flatten({background: AvatarData.Hex})
@@ -94,7 +102,7 @@ export class Avatar {
       const base64Image = AvatarData.File.split(';base64,').pop();
       const imageBuffer = Buffer.from(base64Image, 'base64');
 
-      this.config.sizes.forEach(size => {
+      this.imageSizes.forEach(size => {
         sharp(imageBuffer)
           .extract(AvatarData.Coordinates)
           .resize(size, size)
