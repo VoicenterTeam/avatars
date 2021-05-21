@@ -1,6 +1,6 @@
 {
   "name": "@voicenter/avatars",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Avatars",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
