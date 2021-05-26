@@ -1,1 +1,1 @@
-export default [168, 32, 24];
+export default [168, 56, 32, 24];
