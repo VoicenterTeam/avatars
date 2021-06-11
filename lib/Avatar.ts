@@ -88,7 +88,7 @@ export class Avatar {
     }
 
     const {width, height, left, top} = AvatarData.Coordinates;
-    if (!width || !height || !left || !top) {
+    if (!width || !height || left == null || top == null) {
       throw new Error("Wrong coordinates object");
     }
 
