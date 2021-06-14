@@ -14,7 +14,7 @@ import {
 export class Avatar {
   config: Config;
   fontOptions: FontOptions;
-  imageSizes: Array<number>
+  imageSizes: number[]
 
   constructor(config) {
     if (!config.avatarsPath && !config.templatesPath) {
@@ -28,6 +28,8 @@ export class Avatar {
     }
 
     this.config = config;
+    this.config.avatarsPath += '/';
+    this.config.templatesPath += '/';
 
     this.fontOptions = defaultFontOptions;
     registerFont(defaultFontOptions.fontFile.other, { family: defaultFontOptions.fontFamily.other });
