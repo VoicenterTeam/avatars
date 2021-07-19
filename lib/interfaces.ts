@@ -1,7 +1,7 @@
 export interface Config {
   avatarsPath: string;
   templatesPath: string;
-  sizes?: Array<number>;
+  sizes?: number[];
 }
 
 export interface FontOptions {

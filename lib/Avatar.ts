@@ -1,4 +1,4 @@
-import { mkdir, writeFileSync } from "fs";
+import { mkdir, writeFile } from "fs/promises";
 import sharp from "sharp";
 import { registerFont, createCanvas } from 'canvas';
 import defaultFontOptions from "../config/fonts";
@@ -36,28 +36,27 @@ export class Avatar {
     registerFont(defaultFontOptions.fontFile.hebrew, { family: defaultFontOptions.fontFamily.hebrew });
   }
 
-  public generateFromContent(inputBody: AvatarGenerateFromContentInput) {
+  public async generateFromContent(inputBody: AvatarGenerateFromContentInput) {
     const { AvatarAccountID, AvatarID, AvatarData } = inputBody;
 
     if (!AvatarAccountID || !AvatarID || !AvatarData || !AvatarData.Content || !AvatarData.Hex) {
       throw new Error("Wrong input object");
     }
+
     const savedAvatarsDirectory = `${this.config.avatarsPath}/${AvatarAccountID}/${AvatarID}`;
 
-    mkdir(savedAvatarsDirectory, {recursive: true}, (error) => {
-      if (error) {
-        throw error;
-      }
+    await mkdir(savedAvatarsDirectory, {recursive: true});
 
-      this.imageSizes.forEach(size => {
-        const savedAvatarPath = `${savedAvatarsDirectory}/${size}.png`;
+    for (const size of this.imageSizes) {
+      const savedAvatarPath = `${savedAvatarsDirectory}/${size}.png`;
 
-        this.createCanvasImage(AvatarData.Content, size, AvatarData.Hex, savedAvatarPath);
-      });
-    });
+      await this.createCanvasImage(AvatarData.Content, size, AvatarData.Hex, savedAvatarPath);
+    }
+
+    return savedAvatarsDirectory;
   }
 
-  public generateFromTemplate(inputBody: AvatarGenerateFromTemplateInput) {
+  public async generateFromTemplate(inputBody: AvatarGenerateFromTemplateInput) {
     const {AvatarAccountID, AvatarID, AvatarData} = inputBody;
 
     if (!AvatarAccountID || !AvatarID || !AvatarData || !AvatarData.TemplateID || !AvatarData.Hex) {
@@ -66,23 +65,21 @@ export class Avatar {
 
     const savedAvatarsDirectory = `${this.config.avatarsPath}/${AvatarAccountID}/${AvatarID}`;
 
-    mkdir(savedAvatarsDirectory, {recursive: true}, (error) => {
-      if (error) {
-        throw error;
-      }
+    await mkdir(savedAvatarsDirectory, {recursive: true});
 
-      const templatePath = `${this.config.templatesPath}/${AvatarData.TemplateID}.png`;
+    const templatePath = `${this.config.templatesPath}/${AvatarData.TemplateID}.png`;
 
-      this.imageSizes.forEach(size => {
-        sharp(templatePath)
+    for (const size of this.imageSizes) {
+      await sharp(templatePath)
           .resize(size, size)
           .flatten({background: AvatarData.Hex})
           .toFile(`${savedAvatarsDirectory}/${size}.png`);
-      });
-    });
+    }
+
+    return savedAvatarsDirectory;
   }
 
-  public upload(inputBody: AvatarUploadInput) {
+  public async upload(inputBody: AvatarUploadInput) {
     const {AvatarAccountID, AvatarData, AvatarID} = inputBody;
 
     if (!AvatarAccountID || !AvatarID || !AvatarData || !AvatarData.Coordinates || !AvatarData.File) {
@@ -96,24 +93,22 @@ export class Avatar {
 
     const savedAvatarDirectory = `${this.config.avatarsPath}/${AvatarAccountID}/${AvatarID}`;
 
-    mkdir(savedAvatarDirectory, {recursive: true}, (error) => {
-      if (error) {
-        throw error;
-      }
+    await mkdir(savedAvatarDirectory, {recursive: true});
 
-      const base64Image = AvatarData.File.split(';base64,').pop();
-      const imageBuffer = Buffer.from(base64Image, 'base64');
+    const base64Image = AvatarData.File.split(';base64,').pop();
+    const imageBuffer = Buffer.from(base64Image, 'base64');
 
-      this.imageSizes.forEach(size => {
-        sharp(imageBuffer)
+    for (const size of this.imageSizes) {
+      await sharp(imageBuffer)
           .extract(AvatarData.Coordinates)
           .resize(size, size)
-          .toFile(`${savedAvatarDirectory}/${size}.png`);
-      });
-    });
+          .toFile(`${savedAvatarDirectory}/${size}.png`)
+    }
+
+    return savedAvatarDirectory;
   }
 
-  private createCanvasImage (text: string, size: number, hexColor: string, outImagePath: string) {
+  private async createCanvasImage (text: string, size: number, hexColor: string, outImagePath: string) {
     const fontFamily = Avatar.checkTextContainsHebrew(text)
       ? this.fontOptions.fontFamily.hebrew
       : this.fontOptions.fontFamily.other;
@@ -130,7 +125,7 @@ export class Avatar {
     context.fillText(text, size/2, size/2);
 
     const buffer = canvas.toBuffer('image/png');
-    writeFileSync(outImagePath, buffer);
+    await writeFile(outImagePath, buffer);
   }
 
   private static checkTextContainsHebrew (text) {
