@@ -69,7 +69,7 @@ The images are saved as `src/media/<AvatarAccountID>/<AccountID>/<size>.png`
 * **Example:**
 
 ```js
-avatar.upload({
+await avatar.upload({
   AvatarAccountID: 21,
   AvatarID: 3,
   AvatarData: {
@@ -102,7 +102,7 @@ The images are saved as `src/media/<AvatarAccountID>/<AccountID>/<size>.png`
 * **Example:**
 
 ```js
-avatar.generateFromTemplate({
+await avatar.generateFromTemplate({
   AvatarAccountID: 21,
   AvatarID: 2,
   AvatarData: { TemplateID: 1, Hex: "#640a82" },
@@ -129,7 +129,7 @@ The images are saved as `src/media/<AvatarAccountID>/<AccountID>/<size>.png`
 * **Example:**
 
 ```js
-avatar.generateFromContent({
+await avatar.generateFromContent({
   AvatarAccountID: 21,
   AvatarID: 4,
   AvatarData: { Content: "SZ", Hex: "#640a82" },
